@@ -43,6 +43,30 @@
         <div class="bg-themecolor pl-4  mb-3">
             <span class="fa fa-file"></span> Files
         </div>
+        <div class="col-md-12 row mb-3">
+            @foreach (var item in Model.Files)
+            {
+                <div class="col-md-2 col-xs-4">
+                    <div class="card" style="max-width: 18rem; height:17rem">
+                        <a>
+                            <div class="card-img-content">
+                                <img class="card-img" src="@Url.Content(item.ThumbnailUrl)" />
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-pageid="@item.Id">@item.FileName</a>
+
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="text-success" onclick="RenameFolder()"><i class="fa fa-edit"></i></a>
+                            <a href="#" class="text-danger" style="margin-left:70px" onclick="deleteFolder(@item.Id)"><i class="fa fa-trash"></i></a>
+                        </div>
+                    </div>
+
+
+                </div>
+            }
+        </div>
     </div>
 </div>
 <div class="modal" tabindex="-1" role="dialog" id="deletefoldermodal">

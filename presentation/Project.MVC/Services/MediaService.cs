@@ -39,9 +39,9 @@ namespace EasyShop.Web.Services
 
         #endregion
         #region methods
-        public MediaFile UploadFile(IFormFile file)
+        public MediaFile UploadFile(MediaFolder folder,IFormFile file)
         {
-            return UploadFileInFolder(file);
+            return UploadFileInFolder(folder,file);
 
         }
         public void UpdateFile(MediaFile media, IFormFile file)
@@ -97,7 +97,7 @@ namespace EasyShop.Web.Services
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
-        public MediaFile UploadFileInFolder(IFormFile file)
+        public MediaFile UploadFileInFolder(MediaFolder folder,IFormFile file)
         {
             string baseFileName = file.FileName;
             MediaThumbnailModel model = SaveIcon(file);
@@ -105,16 +105,18 @@ namespace EasyShop.Web.Services
             {
                 FileName = baseFileName,
                 FileSize = Convert.ToInt64(file.Length),
-                FileUrl = SaveFile(file),
+                FileUrl = SaveFileInFolder(folder,file),
                 ThumbnailUrl = model.ThumbnailUrl,
-                MediaType = model.MediaType
-
+                MediaType = model.MediaType,
+                MediaFolderId = folder.Id
             };
 
             var dbmedia = mediaRepository.AddAsync(media).Result;
             return dbmedia;
 
         }
+
+
         private void UpdateFileInFolder(MediaFile media, IFormFile file)
         {
             string baseFileName = file.FileName;
@@ -167,6 +169,27 @@ namespace EasyShop.Web.Services
                 return fileUrl;
             //}
 
+        }
+
+
+        private string SaveFileInFolder(MediaFolder folder, IFormFile file)
+        {
+            string dbpath = folder.FolderUrl.Replace("~/", "").ToString();
+            string uppath = dbpath.Replace("/", "\\").ToString();
+            string fullpath = webHost.WebRootPath + "\\" + uppath;
+            Guid nameguid = Guid.NewGuid();
+            string webrootpath = webHost.WebRootPath;
+            string filename = nameguid.ToString();
+            string extension = Path.GetExtension(file.FileName);
+            filename = filename + extension;
+            string path = Path.Combine(webrootpath, fullpath, filename);
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                file.CopyTo(fileStream);
+            }
+            string pathName = Path.Combine(foldername, filename);
+            string fileUrl = folder.FolderUrl + "/" + filename;
+            return fileUrl;
         }
         private MediaThumbnailModel SaveIcon(IFormFile file)
         {

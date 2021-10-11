@@ -7,18 +7,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Project.Services.Media.Models;
+using Project.Services.Media;
 
 namespace Project.MVC.Controllers
 {
     public class FilesController : Controller
     {
+        private IFileService _fileService;
+
+        public FilesController(IFileService fileService)
+        {
+            _fileService = fileService;
+        }
         [HttpPost]
-        public async Task<IActionResult> Upload([FromForm]IFormCollection form)
+        public JsonResult Upload([FromForm]IFormCollection form)
         {
             FileUploadModel transaction = JsonConvert.DeserializeObject<FileUploadModel>(form["UploadModel"]);
             List<IFormFile> formfiles = form.Files.ToList();
-            var res = 
-            return View();
+            var res = _fileService.UploadFile(transaction, formfiles);
+            return Json(new { success= true});
         }
     }
 }

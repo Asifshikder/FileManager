@@ -10,6 +10,7 @@ namespace Project.Services
         public static IServiceCollection AddServicelayer(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IPageService, PageService>();
+            services.AddTransient<IFileService, FileService>();
             return services;
         }
     }

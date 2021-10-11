@@ -1,0 +1,581 @@
+@model ProductAddEditViewModel
+
+@{
+    ViewData["Title"] = "Create Or Update";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h2>Create Product</h2>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home /</a></li>
+                    <li><a href="/Admin/Product/index">Product</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="card">
+            <div class="tabs">
+                <ul class="tabs-list">
+                    <li class="active"><a href="#tab1">General Information</a></li>
+                    <li><a href="#tab2">Product Attributes</a></li>
+                    <li><a href="#tab3">Product Image</a></li>
+                    <li><a href="#tab4">SEO</a></li>
+                </ul>
+
+                <form asp-controller="Product" asp-action="InsertOrUpdate" method="post" enctype="multipart/form-data">
+                    @*/////////////////////////////////////// General Info //////////////////////////////////////////*@
+                    @if (Model.ProductViewModel != null)
+                    {
+                        <input type="hidden" asp-for="@Model.ProductViewModel.Id" />
+                        <input type="hidden" asp-for="@Model.ProductViewModel.ThumbnailImage.FileName" />
+                        <input type="hidden" asp-for="@Model.ProductViewModel.ThumbnailImageId" />
+                    }
+
+                    <div id="tab1" class="tab active">
+                        <h3>General Information</h3>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Name<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="text" class="form-control" asp-for="ProductViewModel.Name" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Slug</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="text" class="form-control" asp-for="ProductViewModel.Slug" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Brand<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 col-xs-12">
+                                <select asp-for="ProductViewModel.BrandId" class="form-control" asp-items="@(new SelectList(@ViewBag.BrandList,"Id", "Name"))"></select>
+                                <span asp-validation-for="ProductViewModel.BrandId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Thumbnail Image</label>
+                            <div class="col-sm-8 col-xs-12">
+                                @if (@Model.ProductViewModel == null)
+                                {
+                                    <input type="file" id="ThumbnailImage" name="ThumbnailImage" class="form-control dropify">
+                                }
+                                else
+                                {
+                                    <input type="file" id="ThumbnailImage" name="ThumbnailImage" class="form-control dropify" data-default-file="@Url.Content(Model.ProductViewModel.ThumbnailImage.FileName)">
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Short Description</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <textarea asp-for="ProductViewModel.ShortDescription" class="summernote"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Description</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <textarea asp-for="ProductViewModel.Description" class="summernote"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Specification</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <textarea asp-for="ProductViewModel.Specification" class="summernote"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Sku</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="text" asp-for="ProductViewModel.Sku" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Gtin</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="text" asp-for="ProductViewModel.Gtin" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Price</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input asp-for="ProductViewModel.Price" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Old Price</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input asp-for="ProductViewModel.OldPrice" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Special Price</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input asp-for="ProductViewModel.SpecialPrice" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Special Price Start</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="date" asp-for="ProductViewModel.SpecialPriceStart" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Special Price End</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="date" asp-for="ProductViewModel.SpecialPriceEnd" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Enable Stock Tracking</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="checkbox" asp-for="ProductViewModel.StockTrackingIsEnabled" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Is Featured</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="checkbox" asp-for="ProductViewModel.IsFeatured" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Is Published</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="checkbox" asp-for="ProductViewModel.IsPublished" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Is Called For Pricing</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="checkbox" asp-for="ProductViewModel.IsCallForPricing" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Is Allowed To Order</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="checkbox" asp-for="ProductViewModel.IsAllowToOrder" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-warning">Cancel</a>
+                        </div>
+                    </div>
+                    @*/////////////////////////////////////// Product Attributes //////////////////////////////////////////*@
+                    <div id="tab2" class="tab">
+                        <h3>Product Attributes</h3>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Product Templates</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <select id="templateId" class="form-control" asp-items="@(new SelectList(@ViewBag.ProductTemplateList,"Id", "Name"))"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Available Attributes</label>
+                            <div class="col-sm-7 col-xs-12">
+                                <select class="form-control" id="attributesId" asp-items="@(new SelectList(string.Empty,"Id", "Name"))"></select>
+                            </div>
+                            <div class="col-sm-1 col-xs-12">
+                                @if (Model.ProductViewModel == null)
+                                {
+                                    <a href="#" class="btn btn-secondary" disabled>Add</a>
+                                }
+                                else
+                                {
+                                    if (@Model.ProductAttributeValues != null)
+                                    {
+                                        <a onclick="addAttributeFunction(@Model.ProductAttributeValues.Count)" href="#" class="btn btn-secondary">Add</a>
+                                    }
+                                    else
+                                    {
+                                        <a onclick="addAttributeFunction(0)" href="#" class="btn btn-secondary">Add</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row mt-5 mb-5">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Product Attributes</label>
+                            <table id="attributeTable" class="col-sm-8 col-xs-12 table table-striped">
+                                <tr id="attributeForm">
+                                    <th scope="col">
+                                        Attribute Name
+                                    </th>
+                                    <th scope="col">
+                                        Value
+                                    </th>
+                                    <th scope="col">
+                                        Actions
+                                    </th>
+                                </tr>
+                                @if (Model.ProductAttributeValues != null)
+                                    @for (int i = 0; i < Model.ProductAttributeValues.Count; i++)
+                                    {
+                                        string rowId = "row" + i;
+                                        <tr id="@rowId">
+                                            <td scope="row">
+                                                @Model.ProductAttributeValues[i].Attribute.Name
+                                            </td>
+                                            <td>
+                                                <input asp-for="ProductAttributeValues[i].Value" class="form-control">
+                                                <input asp-for="ProductAttributeValues[i].Id" type="hidden">
+                                                <input asp-for="ProductAttributeValues[i].AttributeId" type="hidden">
+                                            </td>
+                                            <td>
+                                                <a onclick="deleteAttributeItem(@Model.ProductAttributeValues[i].Id, '@rowId')" class="btn btn-outline-secondary"><i class="fas fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                            </table>
+                        </div>
+                        @if (Model.ProductViewModel == null)
+                        {
+                            <span class="text-danger">*You have to save the General Information First</span>
+                        }
+                        <div class="form-group">
+                            @if (Model.ProductViewModel == null)
+                            {
+                                <button type="submit" class="btn btn-success" disabled>Save</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-success">Save</button>
+                            }
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-warning">Cancel</a>
+                        </div>
+                    </div>
+                    @*/////////////////////////////////////// Product variation //////////////////////////////////////////*@
+                    <div id="tab5" class="tab">
+                        <h3>Product variation</h3>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Product variations</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <select id="templateId" class="form-control" asp-items="@(new SelectList(@ViewBag.ProductTemplateList,"Id", "Name"))"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Available variations</label>
+                            <div class="col-sm-7 col-xs-12">
+                                <select class="form-control" id="attributesId" asp-items="@(new SelectList(string.Empty,"Id", "Name"))"></select>
+                            </div>
+                            <div class="col-sm-1 col-xs-12">
+                                @if (Model.ProductViewModel == null)
+                                {
+                                    <a href="#" class="btn btn-secondary" disabled>Add</a>
+                                }
+                                else
+                                {
+                                    if (@Model.ProductAttributeValues != null)
+                                    {
+                                        <a onclick="addAttributeFunction(@Model.ProductAttributeValues.Count)" href="#" class="btn btn-secondary">Add</a>
+                                    }
+                                    else
+                                    {
+                                        <a onclick="addAttributeFunction(0)" href="#" class="btn btn-secondary">Add</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row mt-5 mb-5">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Product Attributes</label>
+                            <table id="attributeTable" class="col-sm-8 col-xs-12 table table-striped">
+                                <tr id="attributeForm">
+                                    <th scope="col">
+                                        Attribute Name
+                                    </th>
+                                    <th scope="col">
+                                        Value
+                                    </th>
+                                    <th scope="col">
+                                        Actions
+                                    </th>
+                                </tr>
+                                @if (Model.ProductAttributeValues != null)
+                                    @for (int i = 0; i < Model.ProductAttributeValues.Count; i++)
+                                    {
+                                        string rowId = "row" + i;
+                                        <tr id="@rowId">
+                                            <td scope="row">
+                                                @Model.ProductAttributeValues[i].Attribute.Name
+                                            </td>
+                                            <td>
+                                                <input asp-for="ProductAttributeValues[i].Value" class="form-control">
+                                                <input asp-for="ProductAttributeValues[i].Id" type="hidden">
+                                                <input asp-for="ProductAttributeValues[i].AttributeId" type="hidden">
+                                            </td>
+                                            <td>
+                                                <a onclick="deleteAttributeItem(@Model.ProductAttributeValues[i].Id, '@rowId')" class="btn btn-outline-secondary"><i class="fas fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                            </table>
+                        </div>
+                        @if (Model.ProductViewModel == null)
+                        {
+                            <span class="text-danger">*You have to save the General Information First</span>
+                        }
+                        <div class="form-group">
+                            @if (Model.ProductViewModel == null)
+                            {
+                                <button type="submit" class="btn btn-success" disabled>Save</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-success">Save</button>
+                            }
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-warning">Cancel</a>
+                        </div>
+                    </div>
+
+                    @*/////////////////////////////////////// Product Image //////////////////////////////////////////*@
+                    <div id="tab3" class="tab">
+                        <h3>Product Image</h3>
+                        @if (Model.ProductViewModel != null)
+                        {
+                            <div id="mediaForm">
+                                @if (Model.ProductViewModel.ProductMedia != null)
+                                {
+                                    int i = 0, j = 1;
+                                    @for (; i < Model.ProductViewModel.ProductMedia.Count; i++, j++)
+                                    {
+                                        string divId = "div" + i;
+                                        <div class="form-group row" id="@divId">
+                                            <label class="col-sm-2 col-xs-12 col-form-label ml-2">Product Image @j</label>
+                                            <div class="col-sm-8 col-xs-12">
+                                                <input type="file" id="MediaFiles" name="MediaFiles" class="form-control dropify" data-default-file="@Url.Content(Model.ProductViewModel.ProductMedia[i].Media.FileName)" data-show-remove="false" />
+                                            </div>
+                                            <div class="col-sm-1 col-xs-12 d-flex justify-content-center align-items-center">
+                                                <a onclick="deleteImageItem(@Model.ProductViewModel.ProductMedia[i].Id,'@divId')" class="btn btn-outline-secondary"><i class="fas fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-xs-12 col-form-label ml-2">Product Image 1</label>
+                                        <div class="col-sm-8 col-xs-12">
+                                            <input type="file" id="MediaFiles" name="MediaFiles" class="form-control dropify">
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-xs-12 col-form-label ml-2 mr-2"> </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    @if (Model.ProductViewModel.ProductMedia != null)
+                                    {
+                                        int count = @Model.ProductViewModel.ProductMedia.Count + 1;
+                                        <a onclick="addImageFunction(@count)" class="btn btn-outline-secondary col-sm-8 col-xs-12 image-add-button" href="#"><i class="fas fa-plus-circle"></i> Add new image field</a>
+                                    }
+                                    else
+                                    {
+                                        <a onclick="addImageFunction(1)" class="btn btn-outline-secondary col-sm-8 col-xs-12 image-add-button" href="#"><i class="fas fa-plus-circle"></i> Add new image field</a>
+                                    }
+
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="mediaForm">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-xs-12 col-form-label ml-2">Product Image 1</label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input type="file" id="MediaFiles" name="MediaFiles" class="form-control dropify">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-xs-12 col-form-label ml-2 mr-2"> </label>
+                                <a onclick="addImageFunction(1)" class="btn btn-outline-secondary col-sm-8 col-xs-12 image-add-button" href="#"><i class="fas fa-plus-circle"></i> Add new image field</a>
+                            </div>
+                        }
+
+                        @if (Model.ProductViewModel == null)
+                        {
+                            <span class="text-danger">*You have to save the General Information First</span>
+                        }
+                        <div class="form-group">
+                            @if (Model.ProductViewModel == null)
+                            {
+                                <button type="submit" class="btn btn-success" disabled>Save</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-success">Save</button>
+                            }
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-warning">Cancel</a>
+                        </div>
+                    </div>
+
+                    @*/////////////////////////////////////// SEO //////////////////////////////////////////*@
+                    <div id="tab4" class="tab">
+                        <h3>SEO</h3>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Meta Title</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="text" class="form-control" asp-for="ProductViewModel.MetaTitle">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Meta KeyWords</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="text" class="form-control" asp-for="ProductViewModel.MetaKeywords">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-xs-12 col-form-label ml-2">Meta Description</label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="text" class="form-control" asp-for="ProductViewModel.MetaDescription">
+                            </div>
+                        </div>
+                        @if (Model.ProductViewModel == null)
+                        {
+                            <span class="text-danger">*You have to save the General Information First</span>
+                        }
+                        <div class="form-group">
+                            @if (Model.ProductViewModel == null)
+                            {
+                                <button type="submit" class="btn btn-success" disabled>Save</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-success">Save</button>
+                            }
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-warning">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".tabs-list li a").click(function (e) {
+                e.preventDefault();
+            });
+            $(".tabs-list li").click(function () {
+                var tabid = $(this).find("a").attr("href");
+                $(".tabs-list li,.tabs div.tab").removeClass("active");
+                $(".tab").hide();
+                $(tabid).show();
+                $(this).addClass("active");
+
+            });
+
+            $('.summernote').summernote({
+                tabsize: 2,
+                height: 100
+            });
+
+            $('.dropify').dropify({
+                messages: {
+                    'default': 'Drop or click',
+                    'replace': 'Drop or click',
+                    'remove': 'Remove',
+                    'error': 'Ooops, something wrong happended.'
+                }
+            });
+
+            var items = "<option value='0'>Select</option>";
+            $('#attributesId').html(items);
+
+            $('#templateId').change(function () {
+                console.log('trigger korche!');
+                var url = '@Url.Content("~/")' + "Admin/ProductAttribute/GetProductAttributesByTemplate";
+                var ddlsource = "#templateId";
+                $.getJSON(url, { templateId: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $("#attributesId").empty();
+                    $.each(data, function (i, attributeValue) {
+                        items += "<option value='" + attributeValue.value + "'>" + attributeValue.text + "</option>";
+                    });
+                    $('#attributesId').html(items);
+                });
+            });
+        });
+
+        var i = 0;
+        function addAttributeFunction(iVal) {
+            table = $('#attributeTable').find('tbody');
+            var attributeId = $('#attributesId').val();
+            var attributeName = $('#attributesId option:selected').text();
+            table.append(`<tr>
+                                    <td scope="row">
+                                        `+ attributeName + `
+                                    </td>
+                                    <td>
+                                        <input id="ProductAttributeValues_`+ (i + iVal) + `__Value" name="ProductAttributeValues[` + (i + iVal) + `].Value" class="form-control">
+                                        <input id="ProductAttributeValues_`+ (i + iVal) + `__AttributeId" name="ProductAttributeValues[` + (i + iVal) + `].AttributeId" value="` + attributeId + `" type="hidden" >
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary"><i class="fas fa-times"></i></button>
+                                    </td>
+                                </tr>`);
+            i++;
+        }
+
+        var j = 1;
+        function addImageFunction(jVal) {
+            console.log("the value of j is :" + j)
+            $("#mediaForm").append(
+                `<div class="form-group row">
+                                        <label class="col-sm-3 col-xs-12 col-form-label ml-2">Product Image `+ (j + jVal) + `</label >
+                                        <div class="col-sm-8 col-xs-12">
+                                            <input type="file" id="MediaFiles" name="MediaFiles" class="form-control dropify">
+                                        </div>
+                                    </div>`
+            );
+            j++;
+        }
+
+        function deleteImageItem(id, divId) {
+            divToBeHIde = '#' + divId
+            $.ajax({
+                url: '/Admin/Product/DeleteProductMediaConfirm/' + id + '',
+                type: 'DELETE',
+                success: function (result) {
+                    if (result.success) {
+                        toastr.success('Image removed from product!')
+                        $(divToBeHIde).slideUp(600);
+                    }
+                    else {
+                        toastr.error('Sommething went wrong!')
+                    }
+                }
+            });
+        }
+
+        function deleteAttributeItem(id, rowId) {
+            rowToBeHIde = '#' + rowId
+            $.ajax({
+                url: '/Admin/ProductAttributeValue/DeleteAttributeConfirm/' + id + '',
+                type: 'DELETE',
+                success: function (result) {
+                    if (result.success) {
+                        $(rowToBeHIde).slideUp(600);
+                    }
+                    else {
+                        toastr.error('Sommething went wrong!')
+                    }
+                }
+            });
+        }
+
+    </script>
+}

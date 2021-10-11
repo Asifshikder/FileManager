@@ -10,7 +10,7 @@ namespace Project.Services.Media
 {
    public interface IMediaFileService
     {
-        MediaFile UploadFile(IFormFile file);
+        MediaFile UploadFile(MediaFolder folder,IFormFile file);
         void UpdateFile(MediaFile media, IFormFile file);
         MediaFile GetById(long id);
         void DeleteFile(string fileurl, string thumburl, int mediaType);
