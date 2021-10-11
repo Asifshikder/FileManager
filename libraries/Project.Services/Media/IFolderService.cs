@@ -11,7 +11,6 @@ namespace Project.Services.Media
     public interface IFolderService
     {
         Task<FolderResultModel> CreateFolder(MediaFolder model);
-        Task<FolderResultModel> RenameFolder(MediaFolder model);
         Task<bool> DeleteFolder(long id);
         Task<List<MediaFolder>> GetAllFolder();
     }

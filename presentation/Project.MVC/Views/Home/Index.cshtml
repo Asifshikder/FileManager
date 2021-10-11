@@ -2,27 +2,68 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-@Html.HiddenFor(s=>s.RootFolderId)
+@Html.HiddenFor(s => s.RootFolderId)
+@Html.AntiForgeryToken()
 <div class="row">
     <div class="col-md-12">
         <div class="bg-themecolor pl-4 mb-3">
-            <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-pageid="1" class="text-light"><span class="fa fa-home"></span></a> / sdfds
+            <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-pageid="1" class="text-light"><span class="fa fa-home"></span></a> / @Model.RootFolderName
         </div>
     </div>
     <div class="col-md-12">
         <div class="bg-themecolor pl-4  mb-3">
             <span class="fa fa-folder"></span> Folders
         </div>
-        <div>
-            @foreach(var item in Model.Folders)
+        <div class="col-md-12 row mb-3">
+            @foreach (var item in Model.Folders)
             {
-                <p>@item.FolderName</p>
+                <div class="col-md-2 col-xs-4">
+                    <div class="card" style="max-width: 18rem; height:17rem">
+                        <a>
+                            <div class="card-img-content">
+                                <img class="card-img" src="~/staticfiles/folder.png" />
+                            </div>
+                        </a>
+                        <div class="card-body">
+                                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-pageid="@item.Id">@item.FolderName</a>
+                        
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="text-success" onclick="RenameFolder()"><i class="fa fa-edit"></i></a>
+                            <a href="#" class="text-danger" style="margin-left:70px"  onclick="deleteFolder(@item.Id)"><i class="fa fa-trash"></i></a>
+                        </div>
+                    </div>
+
+
+                </div>
             }
         </div>
     </div>
     <div class="col-md-12">
         <div class="bg-themecolor pl-4  mb-3">
             <span class="fa fa-file"></span> Files
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="deletefoldermodal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger"><i class="fa fa-trash"></i>Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="number" id="editfoldernameinputid" hidden/>
+                    All folders and files in this folder will be deleted parmanently!
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="FolderDeleteConfirm()"><i class="fa fa-trash"></i>Delete permanently</button>
+            </div>
         </div>
     </div>
 </div>

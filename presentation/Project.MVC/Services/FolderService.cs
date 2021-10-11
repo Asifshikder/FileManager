@@ -78,9 +78,5 @@ namespace Project.MVC.Services
             throw new NotImplementedException();
         }
 
-        public Task<FolderResultModel> RenameFolder(MediaFolder model)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

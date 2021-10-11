@@ -22,9 +22,11 @@ namespace Project.Services.Media
         public PageModel GetPageData(int routeid)
         {
             PageModel model = new PageModel();
+            var rootfolder = _folderRepository.GetByIdAsync((Int64)routeid).Result;
             var allsubfolders = _folderRepository.AllIQueryableAsync().Where(s => s.ParentId == routeid).ToList();
             var files = _fileRepository.AllIQueryableAsync().Where(s => s.MediaFolderId == routeid).ToList();
             model.RootFolderId = routeid;
+            model.RootFolderName = rootfolder.FolderName;
             model.Folders = allsubfolders;
             model.Files = files;
             return model;
