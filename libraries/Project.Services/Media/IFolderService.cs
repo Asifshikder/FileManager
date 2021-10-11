@@ -1,4 +1,5 @@
 ﻿using Project.Core.Domain.Media;
+using Project.Services.Media.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Project.Services.Media
 {
     public interface IFolderService
     {
-        public MediaFolder CreateFolder(MediaFolder model);
-        public MediaFolder RenameFolder(MediaFolder model);
-        public bool DeleteFolder(long id);
-        public List<MediaFolder> GetAllFolder();
+        Task<FolderResultModel> CreateFolder(MediaFolder model);
+        Task<FolderResultModel> RenameFolder(MediaFolder model);
+        Task<bool> DeleteFolder(long id);
+        Task<List<MediaFolder>> GetAllFolder();
     }
 }

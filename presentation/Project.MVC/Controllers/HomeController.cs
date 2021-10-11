@@ -26,7 +26,7 @@ namespace Project.MVC.Controllers
             if (pageid == 0)
                 pageid = 1;
             var model = _pageService.GetPageData(pageid);
-            return View();
+            return View(model);
         }
 
         public IActionResult Privacy()

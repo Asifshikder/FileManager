@@ -2,16 +2,27 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="bg-themecolor pl-4 mb-3">
-                <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-pageid="1" class="text-light"><span class="fa fa-home"></span></a> / sdfds
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="bg-themecolor pl-4">
-                <span class="fa fa-file"></span> Folders
-            </div>
+@Html.HiddenFor(s=>s.RootFolderId)
+<div class="row">
+    <div class="col-md-12">
+        <div class="bg-themecolor pl-4 mb-3">
+            <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-pageid="1" class="text-light"><span class="fa fa-home"></span></a> / sdfds
         </div>
     </div>
+    <div class="col-md-12">
+        <div class="bg-themecolor pl-4  mb-3">
+            <span class="fa fa-folder"></span> Folders
+        </div>
+        <div>
+            @foreach(var item in Model.Folders)
+            {
+                <p>@item.FolderName</p>
+            }
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="bg-themecolor pl-4  mb-3">
+            <span class="fa fa-file"></span> Files
+        </div>
+    </div>
+</div>

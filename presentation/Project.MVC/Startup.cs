@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Project.Infrastructure;
+using Project.MVC.Services;
 using Project.Services;
 using Project.Services.Media;
 using System;
@@ -32,6 +33,7 @@ namespace Project.MVC
             services.AddInfrastructure(Configuration); 
             services.AddServicelayer(Configuration); 
             services.AddTransient<IMediaFileService, MediaService>();
+            services.AddTransient<IFolderService, FolderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -20,18 +20,12 @@ function FolderCreateConfirm() {
         type: 'POST',
         data: postmodel,
         success: function (result) {
-            if (result.isSuccess) {
+            if (result.success) {
                 toastr.success(result.message)
-                $.each(result.ids, function (index, value) {
-                    var rowid = "#row" + value + "";
-                    $(rowid).remove();
-                });
-                removeallitemfromarray();
-                $('#multideleteModal').modal('hide');
-                divhideorshow();
+                window.location.reload().delay(100);
             }
             else {
-                toastr.error('Sommething went wrong!')
+                toastr.error(result.message)
             }
         }
     });
