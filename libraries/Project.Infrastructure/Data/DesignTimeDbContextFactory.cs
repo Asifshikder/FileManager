@@ -13,7 +13,7 @@ namespace Project.Infrastructure.Data
         public FileManagementDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<FileManagementDbContext>();
-            optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=filemgmtdb;Trusted_Connection=True;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-56KPLJG\\SQLEXPRESS;Database=filemgmtdb;Trusted_Connection=True;MultipleActiveResultSets=true");
             return new FileManagementDbContext(optionsBuilder.Options);
         }
     }
