@@ -15,6 +15,10 @@ function UploadFileToServer() {
         formData.append("files[]", document.getElementById('uploadfiles').files[index]);
     }
     formData.append('UploadModel', JSON.stringify(model));
+    $("#modalcontentupload").empty();
+    $("#btnfileuploadcancel").prop("disabled", true);;
+    $("#btnfileupload").prop("disabled", true);;
+    $("#modalcontentupload").append('<div class="spinner-border" role="status"> <span class= "visually-hidden" ></span ></div>Uploading');
     $.ajax({
         type: "POST",
         url: "/Files/Upload",

@@ -7,12 +7,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body"  id="modalcontentupload">
                 <input type="file" id="uploadfiles" multiple>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="UploadFileToServer()"><i class="fa fa-upload"></i>Upload</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnfileuploadcancel">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="UploadFileToServer()" id="btnfileupload"><i class="fa fa-upload"></i>Upload</button>
             </div>
         </div>
     </div>
